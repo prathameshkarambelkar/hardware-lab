@@ -1,30 +1,72 @@
-# Project name
+# NN · Project name
 
-One line: what it does.
+<!-- Copy this file to projects/<name>/README.md. Keep the sections in this order.
+     Style rules: see AGENTS.md in the repo root. -->
 
-## Goal
-What I wanted to build or learn.
+## What it does
 
-## Parts
-| Part | Qty | Notes |
+One or two sentences. Add a photo from `media/` if you have one.
+
+## Components needed
+
+| Component | Qty | Notes |
 |---|---|---|
+| ESP32-WROOM-32 DevKit, 38-pin | 1 | |
+| | | |
+
+**Tools needed:** multimeter, …
 
 ## Power
-Supply, rails, and the worst-case current on each.
 
-## Wiring
-Pin table and a link to the diagram in `diagrams/`.
+- **Supply:** what powers it, and its rating (e.g. 5 V 2 A power bank = 10 W).
+- **Rails:**
 
-## Firmware
-How to build and flash. What the code does.
+| Rail | Voltage | Feeds | Worst-case current |
+|---|---|---|---|
+| | | | |
 
-## Result
-What worked, with measurements.
+- **Why it's safe:** worst case total vs. supply rating, in one line.
+
+## Wiring diagram
+
+Open [diagrams/NAME.html](diagrams/NAME.html) (prints on A4 landscape).
+
+| # | From | To | Notes |
+|---|---|---|---|
+| 1 | | | |
+
+**Leave unconnected:** …
+
+⚠ **Can damage parts:** …
+
+## Build steps
+
+1. **Do:** …
+   ✓ **Check:** meter on DC volts, X to Y: expect … **If wrong:** …
+2. …
+
+## Code
+
+```bash
+cd firmware && ~/.platformio/penv/bin/pio run -t upload -t monitor
+```
+
+What the code does, in 3–5 bullets.
+
+## Test result
+
+| Check | Expected | Measured |
+|---|---|---|
+| | | |
 
 ## What went wrong
-Mistakes, symptoms, how I found them, how I fixed them.
+
+- **Symptom:** … **Cause:** … **How I found it:** … **Fix:** …
 
 ## Learnings
-Links to the notes this project produced (`notes/...`).
+
+- [Note title](../../notes/topic/note.md)
 
 ## Next steps
+
+- …

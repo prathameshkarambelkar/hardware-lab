@@ -47,6 +47,11 @@ Wiring and power designs here worked on my bench with my parts. Check voltages a
 against your own parts before copying anything. Wrong wiring can destroy components, and lithium
 batteries can catch fire.
 
+## Contributing / AI assistants
+
+Writing, structure and diagram rules are in [AGENTS.md](AGENTS.md). New projects start from
+[templates/project-readme.md](templates/project-readme.md).
+
 ## License
 
 Code is MIT. Notes, diagrams and images are CC BY 4.0. See [LICENSE](LICENSE).
