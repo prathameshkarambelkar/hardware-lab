@@ -1,3 +1,11 @@
+# Build output
 .pio/
+build/
 .vscode/
+
+# Secrets: commit secrets.example.h instead
+secrets.h
+.env
+
+# OS
 .DS_Store

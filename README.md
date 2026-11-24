@@ -1,50 +1,52 @@
-# ESP32 servo robot
+# hardware-lab
 
-ESP32 (38-pin DevKit) + PCA9685 servo driver + 0.96" SSD1306 OLED, driving MG90S servos.
+My lab notebook for robotics and embedded hardware: things I build, what I learn along the way,
+and the resources I keep coming back to. Everything is written from real bench work, including
+what went wrong.
 
-## Current setup: 2 servos, single power bank
+## Projects
 
-- Power bank 5 V 2 A → USB-C breakout → rocker switch → breadboard + rail (5 V).
-- + rail → PCA9685 screw terminal V+ (servo power) and → ESP32 5V pin via jumper **J1**.
-- − rail → PCA9685 screw terminal GND and ESP32 GND.
-- ESP32 3V3 → PCA9685 VCC and OLED VCC.
-- GPIO21 → SDA (PCA9685, OLED), GPIO22 → SCL/SCK (PCA9685, OLED).
-- Servo 1 → PCA9685 ch0, Servo 2 → ch1 (brown wire on GND row).
-- Optional caps: 1000 µF across the PCA9685 screw terminal, 470 µF across the rails (stripe to −).
-- Leave unconnected: PCA9685 OE, left-header GND, both header V+ pins.
+| # | Project | What it is | Status |
+|---|---------|-----------|--------|
+| 01 | [esp32-servo-robot](projects/esp32-servo-robot/) | ESP32 + PCA9685 + OLED driving MG90S servos | 2 servos working on a power bank |
 
-Worst case ≈ 1.75 A (2 servos at stall + logic) against the bank's 2 A.
-Three or more servos need a separate servo battery — see `diagrams/esp32_servo_robot_wiring.html`.
+## Notes (learnings by topic)
 
-### Safety rules
+- **Power**: [Servo power budgeting](notes/power/servo-power-budgeting.md)
+- **ESP32**: [Pins to avoid](notes/esp32/pins-to-avoid.md) · [Brownout and reset debugging](notes/esp32/brownout-debugging.md)
+- **I2C**: [Scanning and debugging the bus](notes/i2c/i2c-scanning-and-debugging.md)
+- **Motors**: _coming soon_
+- **Tools**: _coming soon_
 
-- **Pull J1 whenever the laptop USB is plugged into the ESP32.**
-- OLED and PCA9685 VCC go to 3V3, never 5 V.
-- Plug/unplug servos only with the switch OFF.
-- Never power servos from the ESP32's 5V or 3V3 pins.
+## Components
 
-## Firmware (`firmware/`)
+Specs, pinouts and gotchas for parts I've used:
+[ESP32 DevKit](components/esp32-devkit.md) ·
+[PCA9685](components/pca9685.md) ·
+[SSD1306 OLED](components/ssd1306-oled.md) ·
+[MG90S servo](components/mg90s-servo.md)
 
-PlatformIO bring-up test: I2C scan, boot counter and reset reason on OLED + serial,
-then repeating sweeps (servo 1, servo 2, both 60 ms apart). Serial commands:
-`s` stop, `g` go, `r` rescan I2C.
+## Resources
 
-```bash
-cd firmware && ~/.platformio/penv/bin/pio run -t upload -t monitor
+- [Links](resources/links.md): datasheets, docs and libraries
+- [Inventory](resources/inventory.md): parts on my bench
+
+## Layout
+
+```
+projects/     things I built, one folder each (firmware, diagrams, media, writeup)
+notes/        learnings by topic, reusable across projects
+components/   one page per part: specs, pinout, gotchas
+resources/    links and inventory
+templates/    starting point for new project writeups
 ```
 
-`platformio.ini` pins the port to `/dev/cu.usbserial-0001`; change it if your board enumerates differently.
+## A word of caution
 
-## Diagrams (`diagrams/`)
+Wiring and power designs here worked on my bench with my parts. Check voltages and current ratings
+against your own parts before copying anything. Wrong wiring can destroy components, and lithium
+batteries can catch fire.
 
-- `esp32_2servo_wiring.html`: two-servo power-bank setup (point-to-point version).
-- `esp32_servo_robot_wiring.html`: full 6-servo design with a separate 3S servo pack and two buck converters.
+## License
 
-## Test result (2026-11-23)
-
-I2C scan found 0x3C (OLED) and 0x40 (PCA9685). Over 2 full sweep cycles, including both servos
-moving together: no resets, reset reason POWER-ON, 0 I2C errors.
-
-Gotcha found during bring-up: the OLED didn't appear on the bus until its SCK/SDA wiring was fixed
-(SCK → GPIO22, SDA → GPIO21). The SSD1306 library's `begin()` reports OK even when the display is absent,
-so trust the I2C scan instead.
+Code is MIT. Notes, diagrams and images are CC BY 4.0. See [LICENSE](LICENSE).
